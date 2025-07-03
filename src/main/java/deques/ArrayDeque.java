@@ -123,14 +123,14 @@ public class ArrayDeque<E> implements Deque<E> {
     }
 
     /**
-     * Increments the given index i, wrapping back to 0 if it is equal to length - 1.
+     * Increments the given index i, wrapping back to 0 if it is equal to or greater than length - 1.
      *
      * @param i the given index
      * @param length the wrap limit
      * @return the incremented index
      */
     private static int increment(int i, int length) {
-        if (i == length - 1) {
+        if (i >= length - 1) {
             return 0;
         }
         return i + 1;
@@ -159,7 +159,7 @@ public class ArrayDeque<E> implements Deque<E> {
     @SuppressWarnings("unchecked")
     private void resize(int capacity) {
         E[] newData = (E[]) new Object[capacity];
-        int i = increment(front, size);
+        int i = increment(front, data.length);
         for (int newIndex = 0; newIndex < size; newIndex += 1) {
             newData[newIndex] = data[i];
             i = increment(i, size);
