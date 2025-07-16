@@ -27,6 +27,7 @@ public class BinarySearchAutocomplete implements Autocomplete {
     public void addAll(Collection<? extends CharSequence> terms) {
         elements.addAll(terms);
         Collections.sort(elements, CharSequence::compare);
+        System.out.println(elements);
     }
 
     @Override
@@ -39,10 +40,9 @@ public class BinarySearchAutocomplete implements Autocomplete {
         if (start < 0) {
             start = -(start + 1);
         }
-        while (start < elements.size()) {
-            if (Autocomplete.isPrefixOf(prefix, elements.get(start))) {
-                result.add(elements.get(start));
-            }
+
+        while (Autocomplete.isPrefixOf(prefix, elements.get(start))) {
+            result.add(elements.get(start));
             start++;
         }
         return result;
