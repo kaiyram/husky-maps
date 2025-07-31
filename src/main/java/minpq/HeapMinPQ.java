@@ -1,5 +1,7 @@
 package minpq;
 
+import net.bytebuddy.build.Plugin;
+
 import java.util.Comparator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -41,20 +43,27 @@ public class HeapMinPQ<E> implements MinPQ<E> {
         if (contains(element)) {
             throw new IllegalArgumentException("Already contains " + element);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        pq.add(new PriorityNode<>(element, priority));
     }
 
     @Override
     public boolean contains(E element) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (PriorityNode<E> node : pq) {
+            if (node.getElement().equals(element)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public double getPriority(E element) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (PriorityNode<E> node : pq) {
+            if (node.getElement().equals(element)) {
+                return node.getPriority();
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -62,8 +71,7 @@ public class HeapMinPQ<E> implements MinPQ<E> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return pq.peek().getElement();
     }
 
     @Override
@@ -71,8 +79,7 @@ public class HeapMinPQ<E> implements MinPQ<E> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return pq.poll().getElement();
     }
 
     @Override
@@ -80,13 +87,19 @@ public class HeapMinPQ<E> implements MinPQ<E> {
         if (!contains(element)) {
             throw new NoSuchElementException("PQ does not contain " + element);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        PriorityNode<E> removeNode = null;
+        for (PriorityNode<E> node : pq) {
+            if (node.getElement().equals(element)) {
+                removeNode = node;
+                break;
+            }
+        }
+        pq.remove(removeNode);
+        add(element, priority);
     }
 
     @Override
     public int size() {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return pq.size();
     }
 }

@@ -124,4 +124,33 @@ public abstract class MinPQTests {
             }
         }
     }
+
+
+
+
+    @Test
+    void compareSimple() {
+        MinPQ<String> reference = new DoubleMapMinPQ<>();
+        for (int i = 1; i < 7; i++) {
+            reference.add("" + i, i);
+        }
+
+        MinPQ<String> testing = createMinPQ();
+        for (int i = 1; i < 7; i++) {
+            testing.add("" + i, i);
+        }
+
+        // Call methods to evaluate behavior.
+        reference.changePriority("3", 0.0);
+        reference.changePriority("1", 7.0);
+
+        testing.changePriority("3", 0.0);
+        testing.changePriority("1", 7.0);
+
+        // Assert that the different PQ's contain elements in equivalent order
+        while (!reference.isEmpty()) {
+            assertEquals(reference.removeMin(), testing.removeMin());
+        }
+        assertTrue(testing.isEmpty());
+    }
 }

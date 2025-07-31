@@ -33,8 +33,14 @@ public class OptimizedHeapMinPQ<E> implements MinPQ<E> {
      * @param elementsAndPriorities each element and its corresponding priority.
      */
     public OptimizedHeapMinPQ(Map<E, Double> elementsAndPriorities) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        this();
+        for (E element : elementsAndPriorities.keySet()) {
+            elements.add(new PriorityNode<>(element, elementsAndPriorities.get(element)));
+            elementsToIndex.put(element, size());
+        }
+        for (int i = elements.size() / 2; i >= 1; i--) {
+            sink(i);
+        }
     }
 
     @Override
@@ -42,20 +48,23 @@ public class OptimizedHeapMinPQ<E> implements MinPQ<E> {
         if (contains(element)) {
             throw new IllegalArgumentException("Already contains " + element);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        elements.add(new PriorityNode<E>(element, priority));
+        elementsToIndex.put(element, size());
+        swim(size());
     }
 
     @Override
     public boolean contains(E element) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return elementsToIndex.containsKey(element);
     }
 
     @Override
     public double getPriority(E element) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (contains(element)) {
+            int index = elementsToIndex.get(element);
+            return elements.get(index).getPriority();
+        }
+        return 0;
     }
 
     @Override
@@ -63,8 +72,7 @@ public class OptimizedHeapMinPQ<E> implements MinPQ<E> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return elements.get(1).getElement();
     }
 
     @Override
@@ -72,8 +80,13 @@ public class OptimizedHeapMinPQ<E> implements MinPQ<E> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        E element = elements.get(1).getElement();
+        exch(1, elements.size() - 1);
+
+        elements.remove(elements.size() - 1);
+        elementsToIndex.remove(element);
+        sink(1);
+        return element;
     }
 
     @Override
@@ -81,13 +94,51 @@ public class OptimizedHeapMinPQ<E> implements MinPQ<E> {
         if (!contains(element)) {
             throw new NoSuchElementException("PQ does not contain " + element);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        int index = elementsToIndex.get(element);
+        if (index != -1) {
+            elements.get(index).setPriority(priority);
+            sink(index);
+            swim(index);
+        }
     }
 
     @Override
     public int size() {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return elements.size() - 1;
+    }
+
+    private void sink(int index) {
+        while (2 * index < elements.size()) {
+            int smallestChild = 2 * index;
+            if (smallestChild + 1 < elements.size() && greater(smallestChild, smallestChild + 1)) {
+                smallestChild++;
+            }
+            if (!greater(index, smallestChild)) {
+                break;
+            }
+            exch(index, smallestChild);
+            index = smallestChild;
+        }
+    }
+
+    private void swim(int index) {
+        while (index > 1 && greater(index / 2, index)) {
+            exch(index / 2, index);
+            index = index / 2;
+        }
+    }
+
+    private boolean greater(int child, int other) {
+        return elements.get(child).getPriority() > elements.get(other).getPriority();
+    }
+
+    private void exch(int i, int j) {
+        E elementI = elements.get(i).getElement();
+        E elementJ = elements.get(j).getElement();
+        PriorityNode<E> swap = elements.get(i);
+        elements.set(i, elements.get(j));
+        elements.set(j, swap);
+        elementsToIndex.put(elementI, j);
+        elementsToIndex.put(elementJ, i);
     }
 }
