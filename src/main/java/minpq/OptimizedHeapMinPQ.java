@@ -95,11 +95,9 @@ public class OptimizedHeapMinPQ<E> implements MinPQ<E> {
             throw new NoSuchElementException("PQ does not contain " + element);
         }
         int index = elementsToIndex.get(element);
-        if (index != -1) {
-            elements.get(index).setPriority(priority);
-            sink(index);
-            swim(index);
-        }
+        elements.get(index).setPriority(priority);
+        sink(index);
+        swim(index);
     }
 
     @Override
