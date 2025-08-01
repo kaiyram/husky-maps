@@ -126,8 +126,8 @@ public class OptimizedHeapMinPQ<E> implements MinPQ<E> {
         }
     }
 
-    private boolean greater(int child, int other) {
-        return elements.get(child).getPriority() > elements.get(other).getPriority();
+    private boolean greater(int first, int other) {
+        return elements.get(first).getPriority() > elements.get(other).getPriority();
     }
 
     private void exch(int i, int j) {
