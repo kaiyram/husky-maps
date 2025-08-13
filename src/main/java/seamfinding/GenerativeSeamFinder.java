@@ -69,8 +69,12 @@ public class GenerativeSeamFinder implements SeamFinder {
         private final Node source = new Node() {
             @Override
             public List<Edge<Node>> neighbors(Picture picture, EnergyFunction f) {
-                // TODO: Replace with your code
-                throw new UnsupportedOperationException("Not implemented yet");
+                List<Edge<Node>> result = new ArrayList<>(picture.height());
+                for (int y = 0; y < picture.height(); y += 1) {
+                    Pixel to = new Pixel(0, y);
+                    result.add(new Edge<>(this, to, f.apply(picture, 0, y)));
+                }
+                return result;
             }
         };
         /**
@@ -79,8 +83,7 @@ public class GenerativeSeamFinder implements SeamFinder {
         private final Node sink = new Node() {
             @Override
             public List<Edge<Node>> neighbors(Picture picture, EnergyFunction f) {
-                // TODO: Replace with your code
-                throw new UnsupportedOperationException("Not implemented yet");
+                return List.of();
             }
         };
 
@@ -126,8 +129,18 @@ public class GenerativeSeamFinder implements SeamFinder {
 
             @Override
             public List<Edge<Node>> neighbors(Picture picture, EnergyFunction f) {
-                // TODO: Replace with your code
-                throw new UnsupportedOperationException("Not implemented yet");
+                List<Edge<Node>> result = new ArrayList<>();
+                if (x + 1 == picture.width()) {
+                    result.add(new Edge<>(this, sink, 0));
+                    return result;
+                }
+                for (int i = -1; i < 2; i++) {
+                    if (y + i >= 0 && y + i < picture.height()) {
+                        Pixel to = new Pixel(x + 1, y + i);
+                        result.add(new Edge<>(this, to, f.apply(picture, x + 1, y + i)));
+                    }
+                }
+                return result;
             }
 
             @Override
