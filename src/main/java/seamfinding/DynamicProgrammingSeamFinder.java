@@ -19,7 +19,7 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
         for (int y = 0; y < picture.height(); y++) {
             pathCosts[0][y] = f.apply(picture, 0, y);
         }
-        tableFiling(picture, f, pathCosts);
+        fillCostTable(picture, f, pathCosts);
         int minIndex = 0;
         double minVal = pathCosts[picture.width() - 1][minIndex];
         for (int y = 1; y < picture.height(); y++) {
@@ -36,8 +36,6 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
 
     private void findMinSeam(Picture picture, double[][] pathCosts, int index, List<Integer> result) {
         int currRow = index;
-
-
         for(int x = picture.width() - 2; x >= 0; x--) {
             int bestRow = currRow;
             double bestCost = Double.MAX_VALUE;
@@ -57,7 +55,7 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
         }
     }
 
-    private void tableFiling(Picture picture, EnergyFunction f, double[][] pathCosts) {
+    private void fillCostTable(Picture picture, EnergyFunction f, double[][] pathCosts) {
         for(int x = 1; x < picture.width(); x++) {
             for(int y = 0; y < picture.height(); y++) {
                 double minPrev = Double.MAX_VALUE;
