@@ -87,14 +87,7 @@ public class HeapMinPQ<E> implements MinPQ<E> {
         if (!contains(element)) {
             throw new NoSuchElementException("PQ does not contain " + element);
         }
-        PriorityNode<E> removeNode = null;
-        for (PriorityNode<E> node : pq) {
-            if (node.getElement().equals(element)) {
-                removeNode = node;
-                break;
-            }
-        }
-        pq.remove(removeNode);
+        pq.remove(new PriorityNode<>(element, 0));
         add(element, priority);
     }
 
