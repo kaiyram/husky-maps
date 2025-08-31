@@ -125,9 +125,6 @@ public abstract class MinPQTests {
         }
     }
 
-
-
-
     @Test
     void compareSimple() {
         MinPQ<String> reference = new DoubleMapMinPQ<>();
